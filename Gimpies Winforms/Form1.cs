@@ -9,6 +9,8 @@ namespace Gimpies_Winforms
         int tries = 3;
         public Form1()
         {
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             InitializeComponent();
         }
 
