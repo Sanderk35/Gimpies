@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Gimpies_Winforms
 {
     public partial class Form1 : Form
     {
+        int tries = 3;
         public Form1()
         {
             InitializeComponent();
@@ -21,9 +16,44 @@ namespace Gimpies_Winforms
         {
             string verkoper = "Verkoper";
             string passwordVerkoper = "Gimpies_Verkoper";
-            if (usernameText.Text == verkoper && passwordInput.Text == passwordVerkoper)
+            string manager = "Manager";
+            string passwordManager = "Gimpies_Manager";
+            string username = usernameInput.Text;
+            string password = passwordInput.Text;
+            if (username == verkoper && password == passwordVerkoper)
             {
-                Environment.Exit(0);
+                // Inloggen als verkoper
+                // Voeg hier de logica toe om de verkoper te laten inloggen
+                Application.Exit();
+            }
+            else if (username == manager && password == passwordManager)
+            {
+                // Inloggen als manager
+                // Voeg hier de logica toe om de manager te laten inloggen
+            }
+            else
+            {
+                // Onjuiste inloggegevens
+                tries--;
+
+                if (tries == 0)
+                {
+                    incorrect.Visible = true;
+                    incorrectText.Visible = true;
+                    incorrectText.Text = "Je deed er teveel pogingen over";
+                    Refresh();
+                    Thread.Sleep(1000);
+                    Application.Exit();
+                }
+                else
+                {
+                    // Geef een foutmelding weer of neem andere actie voor mislukte inlogpogingen
+                    incorrect.Visible = true;
+                    Refresh();
+                    Thread.Sleep(1000);
+                    incorrect.Visible = false;
+                    Refresh();
+                }
             }
         }
     }
