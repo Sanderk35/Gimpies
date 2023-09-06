@@ -16,8 +16,8 @@ namespace Gimpies_Winforms
 
         private void login_Click(object sender, EventArgs e)
         {
-            string verkoper = "Verkoper";
-            string passwordVerkoper = "Gimpies_Verkoper";
+            string verkoper = "";
+            string passwordVerkoper = "";
             string manager = "Manager";
             string passwordManager = "Gimpies_Manager";
             string username = usernameInput.Text;
@@ -26,12 +26,19 @@ namespace Gimpies_Winforms
             {
                 // Inloggen als verkoper
                 // Voeg hier de logica toe om de verkoper te laten inloggen
-                Application.Exit();
+                Form2 verkopersForm = new Form2();
+                verkopersForm.Show();
+                this.Hide();
             }
             else if (username == manager && password == passwordManager)
             {
                 // Inloggen als manager
                 // Voeg hier de logica toe om de manager te laten inloggen
+                welkom.Text = "Welkom Manager";
+                welkom.Visible = true;
+                Refresh();
+                Thread.Sleep(3000);
+                Application.Exit();
             }
             else
             {
@@ -44,15 +51,16 @@ namespace Gimpies_Winforms
                     incorrectText.Visible = true;
                     incorrectText.Text = "Je deed er teveel pogingen over";
                     Refresh();
-                    Thread.Sleep(1000);
+                    Thread.Sleep(2000);
                     Application.Exit();
                 }
                 else
                 {
                     // Geef een foutmelding weer of neem andere actie voor mislukte inlogpogingen
+                    incorrectText.Text = "De gebruikersnaam of het wachtwoord\nis onjuist. Je hebt nog " + tries + " pogingen over";
                     incorrect.Visible = true;
                     Refresh();
-                    Thread.Sleep(1000);
+                    Thread.Sleep(3000);
                     incorrect.Visible = false;
                     Refresh();
                 }
