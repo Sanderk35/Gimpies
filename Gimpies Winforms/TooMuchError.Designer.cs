@@ -34,9 +34,10 @@
             // 
             // Ok
             // 
-            this.Ok.Location = new System.Drawing.Point(306, 73);
+            this.Ok.Location = new System.Drawing.Point(279, 59);
+            this.Ok.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Ok.Name = "Ok";
-            this.Ok.Size = new System.Drawing.Size(98, 28);
+            this.Ok.Size = new System.Drawing.Size(74, 23);
             this.Ok.TabIndex = 0;
             this.Ok.Text = "Oké";
             this.Ok.UseVisualStyleBackColor = true;
@@ -46,24 +47,28 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 34);
+            this.label1.Location = new System.Drawing.Point(9, 28);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(404, 20);
+            this.label1.Size = new System.Drawing.Size(345, 17);
             this.label1.TabIndex = 1;
             this.label1.Text = "Kan deze actie niet doen vanwege te weinig voorraad";
             // 
             // TooMuchError
             // 
             this.AcceptButton = this.Ok;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(420, 113);
+            this.ClientSize = new System.Drawing.Size(366, 92);
             this.ControlBox = false;
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Ok);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "TooMuchError";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Kan deze actie niet doen";
             this.TopMost = true;
             this.ResumeLayout(false);

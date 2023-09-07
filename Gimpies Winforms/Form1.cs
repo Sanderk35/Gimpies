@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Gimpies_Winforms
 {
@@ -26,28 +28,23 @@ namespace Gimpies_Winforms
 
         public void SelectionTimer_Tick(object sender, EventArgs e)
         {
-            if (Storage.SelectedItems.Count > 0 && count.Text.Length > 0)
-            {
-                sellButton.Enabled = true;
-            }
-            else
-            {
-                sellButton.Enabled = false;
-            }
+            if (Storage.SelectedItems.Count > 0 && sellCount.Value > 0) { sellButton.Enabled = true; }
+            else { sellButton.Enabled = false; }
+            if (nameShoeSet.Text.Length > 0 && priceSet.Value > 0 && storageSet.Value > 0 && sizeSet.Value > 0 && colorSet.Text.Length > 0) {  addButton.Enabled = true; }
+            else { addButton.Enabled = false; }
         }
 
         public void EnableAll()
         {
             voorraadBekijkenToolStripMenuItem.Checked = false;
-            verkopenToolStripMenuItem.Checked = false;
             toevoegenToolStripMenuItem.Checked = false;
             aanpassenToolStripMenuItem.Checked = false;
             verwijderenToolStripMenuItem.Checked = false;
 
             voorraadBekijkenToolStripMenuItem.Enabled = true;
-            verkopenToolStripMenuItem.Enabled = true;
             if (UsernameInput.Text == "m")
             {
+                manageToolStripMenuItem.Enabled = true;
                 toevoegenToolStripMenuItem.Enabled = true;
                 aanpassenToolStripMenuItem.Enabled = true;
                 verwijderenToolStripMenuItem.Enabled = true;
@@ -71,8 +68,8 @@ namespace Gimpies_Winforms
             {
                 Login.Visible = false;
                 Refresh();
-                voorraadBekijkenToolStripMenuItem.Enabled = true;
-                verkopenToolStripMenuItem.Enabled = true;
+                EnableAll();
+                menuStrip1.Visible = true;
                 this.Text = "Menu";
                 countShoe[0] = 32;
                 countShoe[1] = 15;
@@ -82,11 +79,9 @@ namespace Gimpies_Winforms
             {
                 Login.Visible = false;
                 Refresh();
-                voorraadBekijkenToolStripMenuItem.Enabled = true;
-                verkopenToolStripMenuItem.Enabled = true;
-                toevoegenToolStripMenuItem.Enabled = true;
-                aanpassenToolStripMenuItem.Enabled = true;
-                verwijderenToolStripMenuItem.Enabled = true;
+                EnableAll();
+                menuStrip1.Visible = true;
+                manageToolStripMenuItem.Visible = true;
                 this.Text = "Menu";
                 countShoe[0] = 32;
                 countShoe[1] = 15;
@@ -118,20 +113,15 @@ namespace Gimpies_Winforms
         private void voorraadBekijkenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EnableAll();
+            this.Text = "Voorraad bekijken en verkopen";
             voorraadBekijkenToolStripMenuItem.Checked = true;
             voorraadBekijkenToolStripMenuItem.Enabled = false;
-        }
-
-        private void verkopenToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            EnableAll();
-            verkopenToolStripMenuItem.Checked = true;
-            verkopenToolStripMenuItem.Enabled = false;
         }
 
         private void toevoegenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EnableAll();
+            this.Text = "Toevoegen";
             toevoegenToolStripMenuItem.Checked = true;
             toevoegenToolStripMenuItem.Enabled = false;
         }
@@ -159,14 +149,13 @@ namespace Gimpies_Winforms
                 Storage.Items[1].SubItems[2].Text = countShoe[1] + " paar";
                 Storage.Items[2].SubItems[2].Text = countShoe[2] + " paar";
 
-                count.Visible = true;
+                sellCount.Visible = true;
                 sellButton.Visible = true;
                 paarText.Visible = true;
             }
             else
             {
-                Storage.Visible = false;
-                count.Visible = false;
+                sellCount.Visible = false;
                 sellButton.Visible = false;
                 paarText.Visible = false;
             }
@@ -174,7 +163,72 @@ namespace Gimpies_Winforms
 
         private void sellButton_Click(object sender, EventArgs e)
         {
+            decimal count = sellCount.Value;
+            ListViewItem selectedItem = Storage.SelectedItems[0];
+            string input = selectedItem.SubItems[2].Text;
+            string[] parts = input.Split(' '); // Split de string op spaties
 
+            // De eerste deel (index 0) is het getal
+            if (parts.Length > 0)
+            {
+                string numberPart = parts[0]; // Haal het getal deel uit de array
+                int.TryParse(numberPart, out int shoeCount);
+
+                if (count < (shoeCount + 1))
+                {
+                    int intCount = (int)count;
+                    int newShoeCount = shoeCount - intCount;
+                    string newShoeCountString = newShoeCount.ToString();
+                    selectedItem.SubItems[2].Text = newShoeCountString + " paar";
+                }
+                else
+                {
+                    TooMuchError tooMuch = new TooMuchError();
+                    SystemSounds.Exclamation.Play();
+                    tooMuch.ShowDialog();
+                }
+            }
+        }
+
+        private void toevoegenToolStripMenuItem1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (toevoegenToolStripMenuItem.Checked == true)
+            {
+                Storage.Visible = true;
+                addPanel.Visible = true;
+                Refresh();
+            }
+            else
+            {
+                addPanel.Visible = false;
+                Refresh();
+            }
+        }
+
+        private void addButton_Click(object sender, EventArgs e)
+        {
+            // Haal de waarden op uit de TextBoxes en NumericUpDowns
+            string naam = nameShoeSet.Text;
+            int prijs = (int)priceSet.Value;
+            int voorraad = (int)storageSet.Value;
+            decimal schoenmaat = sizeSet.Value;
+            string kleur = colorSet.Text;
+
+            string voorraadTekst = voorraad + " paar";
+
+            ListViewItem item = new ListViewItem(naam);
+            item.SubItems.Add("€" + prijs.ToString());
+            item.SubItems.Add(voorraadTekst.ToString());
+            item.SubItems.Add(schoenmaat.ToString());
+            item.SubItems.Add(kleur);
+
+            Storage.Items.Add(item);
+
+            nameShoeSet.Clear();
+            priceSet.Value = 0;
+            storageSet.Value = 0;
+            sizeSet.Value = 0;
+            colorSet.Clear();
         }
     }
 }
