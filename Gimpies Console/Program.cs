@@ -252,9 +252,9 @@ namespace Gimpies_Console {
                         Thread.Sleep(1000);
                         Environment.Exit(0);
                     }
-                } while(true);
+                } while (true);
             }
-            
+
         }
     }
 }
