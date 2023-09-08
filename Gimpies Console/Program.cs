@@ -5,8 +5,8 @@ using System.Threading;
 namespace Gimpies_Console {
     internal class Program {
         static void Main(string[] args) {
-            string realPassword = "a";
-            string realUsername = "a";
+            string realPassword = "Gimpies_Inkoop";
+            string realUsername = "Inkoop";
             string password = null;
             ConsoleKeyInfo key;
             string username = null;
